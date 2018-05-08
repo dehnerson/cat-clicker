@@ -1,23 +1,39 @@
 'use strict'
 
-let initCat = function(catDiv, name) {
-  catDiv.querySelector('.cat-name').textContent = name;
 
-  let catClicks = catDiv.querySelector('.cat-clicks');
-  catClicks.textContent = 0;
+const cats = [{name: 'Hanni', clicks: 0, pic: 'img/cat.jpg'}, {name: 'Nanni', clicks: 0, pic: 'img/cat2.jpg'} ];
 
-  catDiv.querySelector('.cat-pic').addEventListener('click', function(event) {
-    incrementClickCounter(catClicks);
-  });
-};
+let catList = document.querySelector('.cat-list');
+let catDisplay = document.querySelector('.cat-display');
+let catName = catDisplay.querySelector('.cat-name');
+let catClicks = catDisplay.querySelector('.cat-clicks');
+let catPic = catDisplay.querySelector('.cat-pic');
 
-let incrementClickCounter = function(clickCounterElement) {
-  clickCounterElement.textContent = parseInt(clickCounterElement.textContent) + 1;
-};
+for(let i=0; i<cats.length; i++) {
+  let cat = cats[i];
+  let newLi = document.createElement('li');
+  newLi.id = i;
+  newLi.textContent = cat.name;
 
+  catList.appendChild(newLi);
+}
 
-let cat1 = document.querySelector('#cat1');
-let cat2 = document.querySelector('#cat2');
+catList.addEventListener('click', function(event) {
+  if(event.target.nodeName === 'LI') {
+    let cat = cats[event.target.id];
 
-initCat(cat1, 'Hanni');
-initCat(cat2, 'Nanni');
+    catName.textContent = cat.name;
+    catClicks.textContent = cat.clicks;
+    catPic.src = cat.pic;
+    catPic.catIndex = event.target.id;
+
+    catDisplay.classList.remove('hidden');
+  }
+});
+
+catPic.addEventListener('click', function(event) {
+  let cat = cats[event.target.catIndex];
+
+  cat.clicks ++;
+  catClicks.textContent = cat.clicks;
+});
